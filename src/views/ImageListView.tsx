@@ -6,6 +6,7 @@ import ImageList from '../components/ImageList';
 import useWindowSize from '../hooks/useWindowSize';
 import { fetchPhotos } from '../store/actions';
 import { IAppState } from '../store/reducer';
+import { Alert } from '@material-ui/lab';
 
 const StyledProgress = withStyles({
     root: {
@@ -17,30 +18,34 @@ const StyledProgress = withStyles({
 const ImageListView = () => {
     const dispatch = useDispatch();
     const photos = useSelector((state: IAppState) => state.photos);
-    const windowSize = useWindowSize();
+    const { height: windowHeight, width: windowWidth } = useWindowSize();
 
     const tileSize = 150;
-    const columnCount = Math.floor(windowSize.width / tileSize) || 1
-    const spacing = columnCount > 1 ? Math.floor((windowSize.width % tileSize) / (columnCount - 1)) : 0
-    const rowCount = Math.floor(windowSize.height / tileSize) || 1
+    const columnCount = Math.floor(windowWidth / tileSize) || 1
+    const spacing = columnCount > 1 ? Math.floor((windowWidth % tileSize) / (columnCount - 1)) : 0
+    const rowCount = Math.floor(windowHeight / tileSize) || 1
     const fetchSize = Math.max(20, columnCount * rowCount * 2);
     const loadMore = () => dispatch(fetchPhotos(fetchSize));
+    const hasMore = photos.length < 5000;
 
     return (
-        <InfiniteScroll
-            pageStart={1}
-            loadMore={loadMore}
-            hasMore={photos.length < 5000}
-            loader={<StyledProgress key="loading" />}
-        >
-            <ImageList
-                key="images"
-                photos={photos}
-                columnCount={columnCount}
-                spacing={spacing}
-                tileSize={tileSize}
-            />
-        </InfiniteScroll>
+        <>
+            <InfiniteScroll
+                pageStart={1}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                loader={<StyledProgress key="loading" />}
+            >
+                <ImageList
+                    key="images"
+                    photos={photos}
+                    columnCount={columnCount}
+                    spacing={spacing}
+                    tileSize={tileSize}
+                />
+            </InfiniteScroll>
+            {!hasMore && <Alert severity="success">Kaikki ladattu - hyvää työtä!</Alert>}
+        </>
     )
 }
 
