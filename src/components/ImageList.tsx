@@ -5,14 +5,15 @@ import { GridList, GridListTile, GridListTileBar } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
 export type ImageListProps = {
-    photos: Array<IPhotoDefinition>
+    photos: Array<IPhotoDefinition>,
+    columnCount: number,
+    spacing: number,
+    tileSize: number,
 }
 
-const tileHeight = 150;
-
-const ImageList: React.FC<ImageListProps> = ({ photos }) => {
+const ImageList: React.FC<ImageListProps> = ({ photos, columnCount, spacing, tileSize }) => {
     return (
-        <GridList cellHeight={tileHeight} cols={5}>
+        <GridList cellHeight={tileSize} cols={columnCount} spacing={spacing}>
             {photos.map((p) => (
                 <GridListTile key={p.id}>
                     <Link to={`/photos/${p.id}`}>

@@ -2,7 +2,7 @@ import { Button, Card, CardActionArea, CardActions, CardContent, Typography } fr
 import { Skeleton } from '@material-ui/lab';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Image from '../components/Image';
 import { fetchPhoto } from '../store/actions';
 import { IPhotoDefinition } from '../store/models';
@@ -15,6 +15,15 @@ const ImageView = () => {
     const id: number = photoId ? parseInt(photoId, 10) : 0;
     const dispatch = useDispatch();
     const photo = useSelector((state: IAppState) => id ? state.photos.find(p => p.id === id) || getMatchedOrNull(id, state.directPhoto) : null)
+    const history = useHistory();
+
+    const handleRouting = () => {
+        if (history.length > 0) {
+            history.goBack();
+        } else {
+            history.push('/');
+        }
+    }
 
     useEffect(() => {
         if (!photo) {
@@ -33,11 +42,9 @@ const ImageView = () => {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Link to="/">
-                    <Button size="small" color="primary">
-                        Listaukseen
-                    </Button>
-                </Link>
+                <Button onClick={handleRouting} size="small" color="primary">
+                    Listaukseen
+                </Button>
             </CardActions>
         </Card>
     ) : <Skeleton variant="rect" animation="wave" width="100%" height={600} />

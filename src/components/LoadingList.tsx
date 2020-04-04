@@ -4,16 +4,17 @@ import React from 'react';
 
 export type LoadingListProps = {
     tilesCount: number,
+    columnCount: number,
+    spacing: number,
+    tileSize: number,
 }
 
-const tileHeight = 150;
-
-const LoadingList: React.FC<LoadingListProps> = ({ tilesCount }) => {
+const LoadingList: React.FC<LoadingListProps> = ({ tilesCount, columnCount, spacing, tileSize }) => {
     return (
-        <GridList cellHeight={tileHeight} cols={5}>
+        <GridList cellHeight={tileSize} cols={columnCount} spacing={spacing}>
             {Array(tilesCount).fill(0).map((p, idx) => (
                 <GridListTile key={idx}>
-                    <Skeleton variant="rect" animation="wave" width={tileHeight} height={tileHeight} />
+                    <Skeleton variant="rect" animation="wave" width={tileSize} height={tileSize} />
                 </GridListTile>
             ))}
         </GridList>

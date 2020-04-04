@@ -27,8 +27,8 @@ export const singleLoaded = (photo: IPhotoDefinition): IAction => ({
 
 const serverUrl = 'http://jsonplaceholder.typicode.com';
 
-export const fetchPhotos = () => async (dispatch: Dispatch, getState: () => IAppState) => {
-    const { photos, fetchSize } = getState();
+export const fetchPhotos = (fetchSize: number) => async (dispatch: Dispatch, getState: () => IAppState) => {
+    const { photos } = getState();
     dispatch(photosLoadMore());
     const response = await fetch(`${serverUrl}/photos?_start=${photos.length}&_limit=${fetchSize}`);
     dispatch(photosLoaded(await response.json()));

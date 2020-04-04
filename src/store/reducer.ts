@@ -3,12 +3,11 @@ import { PHOTOS_LOADED, IAction, PHOTOS_LOAD_MORE, SINGLE_LOADED } from './actio
 
 export interface IAppState {
     photos: Array<IPhotoDefinition>,
-    fetchSize: number,
     loading: boolean,
     directPhoto?: IPhotoDefinition, // Place to store a photo that was downloaded to support direct linking
 }
 
-const initialState: IAppState = { photos: [], fetchSize: 50, loading: false };
+const initialState: IAppState = { photos: [], loading: false };
 
 export default function reducer(state: IAppState = initialState, action: IAction) {
   switch (action.type) {
